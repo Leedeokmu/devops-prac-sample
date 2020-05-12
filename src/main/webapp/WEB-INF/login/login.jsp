@@ -2,7 +2,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 
 <style>
 	
@@ -49,7 +49,13 @@
 	}
 	.reviewArea{
 		width: 100%;
-		height: 200px;
+		height: 180px;
+		text-align: left;
+		padding : 4px;
+	}
+	.reviewTitle{
+		width: 100%;
+		height: 20px;
 		text-align: left;
 		padding : 4px;
 	}
@@ -57,7 +63,7 @@
 	.reviewArea > textarea {
 		resize: none;
 		width: 98%;
-		height: 198px;
+		height: 168px;
 		background:#AAAA0011;
 		overflow:hidden;
     	border: 0px !important;
@@ -78,18 +84,46 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-	Kakao.init('b30526376249afa40b9d4f5c977a841f');
+	<c:if test="${ user == null }" >
+	Kakao.init('e817b49592630e4585366f25b5a72957');
     // 카카오 로그인 버튼을 생성합니다.
     Kakao.Auth.createLoginButton({
       container: '#kakao-login-btn',
       success: function(authObj) {
-        alert(JSON.stringify(authObj));
+        // alert(JSON.stringify(authObj));
+       Kakao.API.request({url:'/v2/user/me',
+    	   success:function (res){
+    		   var id = res.id;
+    		   var email = (res.kaccount_email ? res.kaccount_email : '');
+    		   var nickname = (res.properties && res.properties.nickname ? res.properties.nickname : '');
+
+    		   alert(id);
+    		   alert(email);
+    		   alert(nickname);
+    		   nickname = '치킨';
+
+    		   $("#logininfo").text(nickname);
+    		   $.post("/kakaoLogin",
+	   			   {id:id, email : email, nickname : nickname}
+	   			 	, function (data){
+	   			 		if(data == 1){
+	   			 			alert("로그인이 완료 되었습니다.");
+	   			 			$("#kakao-login-btn").hide();
+
+	   			 		}
+	   			 	}
+    		   )
+    	   },
+    	   fail:function (error){
+
+    	   }})
+       
       },
       fail: function(err) {
          alert(JSON.stringify(err));
       }
     });
-    
+    </c:if>
     var slideAelements = $('.slide-child')
     
     
@@ -119,25 +153,26 @@ $(document).ready(function(){
 		<div class="slide-child">오프라인 후기 정보들을</div>
 		<div class="slide-child">모아모아 제공합니다.</div>
 	</div>
+	<c:if test="${ user == null }" >
 	<div id="kakao-login-btn">
 		
 	</div>
-	
+	</c:if>
 	
 </div>
 
 <div class="itemListWrapper">
 <div class="itemList slide-child">
-   <div class="imageArea"><img src="img/img1.jpg"/></div>
+   <div class="imageArea"><img src="<c:out value="${ reviewList[0].s3ImageUrl }" />"/></div>
    <div class="reviewArea">
-      <textarea readonly>일 시 : 2019년 11월 2일
-장소 : 공덕 IOT COC (1차), 바른치킨(2차)
-시간 : 3시, 6시</textarea>
+   	  <div class="reviewTitle" ><c:out value="${ reviewList[0].title }" /> </div>
+      <textarea readonly><c:out value="${ reviewList[0].content }" /></textarea>
    </div>
 </div>
 <div class="itemList slide-child">
    <div class="imageArea"><img src="img/img2.jpg"/></div>
    <div class="reviewArea">
+  	  <div class="reviewTitle" ><c:out value="${ reviewList[0].title }" /> </div>
       <textarea readonly>일시 : 2019년 9월 28일
 장소 : 공덕 IOT COC (1차), 바른치킨(2차)
 시간 : 3시, 6시
@@ -198,7 +233,7 @@ $(document).ready(function(){
 <div class="itemList slide-child">
    <div class="imageArea"><img src="img/img3.jpg"/></div>
    <div class="reviewArea" >
-   
+      <div class="reviewTitle" ><c:out value="${ reviewList[0].title }" /> </div>
       <textarea readonly>[2019년 9월 19일 7시 곱창팟 치킨모임 후기]
 
 장소 : 홍대 가오곱창
@@ -282,3 +317,4 @@ $(document).ready(function(){
 
 </body>
 </html>
+
