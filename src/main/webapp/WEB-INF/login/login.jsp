@@ -197,7 +197,7 @@ $(document).ready(function(){
                 alert('complete');
                 $('#btnSubmit').prop('disabled', false);
                 $('#cover-form').hide();
-                locatio.refresh();
+                location.refresh();
             },
             error: function (error) {
                 alert('error');
