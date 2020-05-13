@@ -22,9 +22,9 @@ public class AwsS3Service {
     @Autowired
     private ReviewMapper reviewMapper;
 
-    private static final String BUCKET_NAME = "awsreview-01";
-    private static final String ACCESS_KEY = "AKIATN5LFDAUFYRPGYQJ";
-    private static final String SECRET_KEY = "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";
+    private static final String BUCKET_NAME = "";
+    private static final String ACCESS_KEY = "";
+    private static final String SECRET_KEY = "";
     private AmazonS3 s3;
 
     public AwsS3Service() {
