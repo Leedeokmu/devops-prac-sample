@@ -49,6 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.authorizeRequests()
 		 	.antMatchers(staticResources).permitAll()
 		 	.antMatchers("/kakaoLogin").permitAll()
+		 	.antMatchers("/fileUpload").permitAll()
 		 	.anyRequest().authenticated()
 			.and()
 

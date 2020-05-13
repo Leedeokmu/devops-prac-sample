@@ -11,5 +11,7 @@ import com.chicken.review.login.vo.ReviewVO;
 public interface ReviewMapper {
 
 	List<ReviewVO> getReviewList();
+	Integer insertReview(ReviewVO review);
+
 	
 }

@@ -12,6 +12,24 @@
 			review
 			
 	</select>
-	
-	
+
+	<update id="insertReview"  parameterType="com.chicken.review.login.vo.ReviewVO"  >
+
+		INSERT INTO review(
+		  userid,
+		  title,
+		  content,
+		  createDt,
+		  s3ImageUrl
+		) VALUES (
+		  #{userId},
+		  #{title},
+		  #{content},
+		  NOW(),
+		  #{s3ImageUrl}
+		)
+	</update>
+
+
+
 </mapper>
